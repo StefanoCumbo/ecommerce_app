@@ -7,12 +7,14 @@ import { PurchasedItemsPage } from './pages/purchased-items';
 import { ShopPage } from './pages/shop';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ShopContextProvider } from './context/shop-context';
 
 
 function App() {
   return (
     <div className='App'>
       <Router>
+        <ShopContextProvider>
         <Navbar/>
  
 
@@ -29,6 +31,7 @@ function App() {
         </Routes>
 
         <ToastContainer/>
+        </ShopContextProvider>
 
 
       </Router>

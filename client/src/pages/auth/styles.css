@@ -1,0 +1,67 @@
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f2f2f2;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    width: 350px;
+    transition: transform 0.3s ease;
+}
+
+.auth-container:hover {
+    transform: scale(1.05);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333; /* Ensuring label text is visible */
+}
+
+input {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+.addToCartBtn {
+    background-color: #4a90e2; /* Ensuring button is always visible */
+    border: none;
+    min-width: 120px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: black; /* Ensuring text is visible on button */
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.addToCartBtn:hover {
+    background-color: #357ABD;
+    cursor: pointer;
+    transform: translateY(-2px);
+}

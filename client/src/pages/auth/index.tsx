@@ -1,14 +1,17 @@
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, useContext } from "react";
 import axios from "axios";
 import {toast} from 'react-toastify'
-import { UserErrors } from "../../errors";
+import { UserErrors } from "../../models/errors";
 import { useCookies } from "react-cookie";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { IShopContext, ShopContext } from "../../context/shop-context";
+
+import "./styles.css"
 
 export const AuthPage = () => {
     return ( 
     <div className="auth">
-        Auth
+        
         <Register/>
         <Login/>
     </div> );
@@ -71,7 +74,7 @@ const Register = () => {
 
                 </div>
 
-                <button type="submit"> Register</button>
+                <button type="submit" className="addToCartBtn"> Register</button>
             </form>
         </div>
      );
@@ -89,6 +92,8 @@ const Login = () => {
 
     const navigate = useNavigate()
 
+    const { setIsAuthenticated} = useContext<IShopContext>(ShopContext)
+
     const handleSubmit = async (e: SyntheticEvent)=>{
         e.preventDefault()
         try{
@@ -98,12 +103,13 @@ const Login = () => {
             });
             setCookies("access_token", result?.data?.token);
             localStorage.setItem("userID", result?.data?.userID)
+            setIsAuthenticated(true);
             navigate('/')
 
         } catch(err){
 
             let errorMessage: string = ""
-            switch(err.response.data.type){
+            switch(err?.response?.data?.type){
                 case UserErrors.NO_USER_FOUND:
                     errorMessage = "User doesnt exist"
                     break
@@ -146,7 +152,7 @@ const Login = () => {
 
                 </div>
 
-                <button type="submit"> Login</button>
+                <button type="submit" className="addToCartBtn"> Login</button>
             </form>
         </div>
      );
