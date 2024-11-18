@@ -5,7 +5,7 @@ export interface IUser {
     username: string;
     password: string;
     availableMoney: number;
-    // purchasedItems: string[];
+    purchasedItems: string[];
 
 }
 
@@ -13,8 +13,8 @@ export interface IUser {
 const UserSchema = new Schema<IUser>({
     username: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    availableMoney: {type: Number, default: 5000},
-    // purchasedItems
+    availableMoney: {type: Number, default: 2500},
+    purchasedItems: [{type: Schema.Types.ObjectId, ref: "product", default: []}]
     
 })
 
