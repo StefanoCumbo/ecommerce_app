@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { IUser, UserModel } from '../models/user';
 import { UserErrors } from '../errors';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
 
 
