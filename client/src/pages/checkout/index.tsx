@@ -3,7 +3,7 @@ import { useGetProducts } from "../../hooks/useGetProducts";
 import { IProduct } from "../../models/interfaces";
 import { IShopContext, ShopContext } from "../../context/shop-context";
 import { CartItem } from "./cart-item";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./styles.css" ;
 
@@ -22,11 +22,12 @@ export const CheckoutPage = () => {
             </div>
             <div className="cart">
                 
-                {products.map((product: IProduct)=>{
+                {products.map((product: IProduct )=>{
                     if (getCartItemCount(product._id) !== 0 ){
                         return <CartItem product={product}/>
 
                     }
+                    return null ;
                 })}
             </div> 
             {totalAmount > 0 ? (

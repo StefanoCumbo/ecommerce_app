@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useEffect, useState, useCallback } from "react";
 import { useGetProducts } from "../hooks/useGetProducts";
 import { IProduct } from "../models/interfaces";
 import axios from "axios";
@@ -7,181 +7,125 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 
-const apiURL = process.env.REACT_APP_API_URL
+const apiURL = process.env.REACT_APP_API_URL;
 
-export interface IShopContext{
+export interface IShopContext {
     addToCart: (itemId: string) => void;
     removeFromCart: (itemId: string) => void;
-    updateCartItemCount: (newAmount: number,itemId: string) => void
+    updateCartItemCount: (newAmount: number, itemId: string) => void;
     getCartItemCount: (itemId: string) => number;
     getTotalCartAmount: () => number;
-    checkout: ()=> void;
+    checkout: () => void;
     availableMoney: number;
     purchasedItems: IProduct[];
     isAuthenticated: boolean;
-    setIsAuthenticated: (isAuthenticated: boolean)=> void
-
+    setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
+
 const defaultVal: IShopContext = {
-    addToCart: ()=> null,
-    removeFromCart: ()=> null,
-    updateCartItemCount: ()=> null,
-    getCartItemCount: ()=> 0,
-    getTotalCartAmount: ()=> 0,
-    checkout: ()=> null,
-    availableMoney: 0 ,
+    addToCart: () => null,
+    removeFromCart: () => null,
+    updateCartItemCount: () => null,
+    getCartItemCount: () => 0,
+    getTotalCartAmount: () => 0,
+    checkout: () => null,
+    availableMoney: 0,
     purchasedItems: [],
     isAuthenticated: false,
-    setIsAuthenticated: ()=> null
+    setIsAuthenticated: () => null,
+};
 
-}
+export const ShopContext = createContext<IShopContext>(defaultVal);
 
-export const ShopContext = createContext<IShopContext>(defaultVal)
-
-
-export const ShopContextProvider = (props)=>{
-
-    const [cartItems, setCartItems] = useState<{string: number} | {}>({})
+export const ShopContextProvider = (props) => {
+    const [cartItems, setCartItems] = useState<{ [key: string]: number }>({});
     const [availableMoney, setAvailableMoney] = useState<number>(0);
-    const {products} = useGetProducts();
-    const {headers} = useGetToken();
-    const [purchasedItems, setPurchasedItems] = useState<IProduct[]>([])
-    const [cookies, setCookies] = useCookies(["access_token"])
-    const [isAuthenticated, setIsAuthenticated]= useState<boolean>(cookies.access_token != null)
-
+    const { products } = useGetProducts();
+    const { headers } = useGetToken();
+    const [purchasedItems, setPurchasedItems] = useState<IProduct[]>([]);
+    const [cookies, setCookies] = useCookies(["access_token"]);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(cookies.access_token != null);
 
     const navigate = useNavigate();
 
-    const fetchAvailableMoney = async()=>{
+    const fetchAvailableMoney = useCallback(async () => {
         try {
-            const result = await axios.get(`${apiURL}/user/available-money/${localStorage.getItem("userID")}`, 
-            {headers}
-        )
-        setAvailableMoney(result.data.availableMoney)
-            
+            const result = await axios.get(`${apiURL}/user/available-money/${localStorage.getItem("userID")}`, { headers });
+            setAvailableMoney(result.data.availableMoney);
         } catch (err) {
-            toast.error("ERROR:  Something went wrong")
-            
+            toast.error("ERROR: Something went wrong");
         }
-    }
-    const fetchPurchasedItems = async()=>{
+    }, [headers]);
+
+    const fetchPurchasedItems = useCallback(async () => {
         try {
-            const result = await axios.get(`${apiURL}/product/purchased-items/${localStorage.getItem("userID")}`, 
-            {headers}
-        )
-        setPurchasedItems(result?.data?.purchasedItems)
-            
+            const result = await axios.get(`${apiURL}/product/purchased-items/${localStorage.getItem("userID")}`, { headers });
+            setPurchasedItems(result?.data?.purchasedItems);
         } catch (err) {
-            toast.error("ERROR:  Something went wrong")
-            
+            toast.error("ERROR: Something went wrong");
         }
-    }
+    }, [headers]);
 
-    const getCartItemCount = (itemId: string): number=>{
-        if(itemId in cartItems){
-            return cartItems[itemId]
-        }
-
-        return 0
-    }
-
-    const addToCart = (itemId: string)=>{
-        if(!cartItems[itemId]){
-            setCartItems((prev)=> ({...prev, [itemId]: 1 }))
-        }
-        else{
-            setCartItems((prev)=> ({...prev, [itemId]: prev[itemId] + 1}))
-        }
-
-    } 
-//////////////////////////////////////Explaination of addToCart Function///////////////////////////////////////////////////////////// 
-//                                                                                                                                 //
-//     If cartItems[itemId] is undefined (meaning the item doesn't exist in the cart),                                             //
-//      setCartItems updates the state, using the previous state prev.                                                             //
-//      ...prev spreads the previous state into a new object, ensuring that all existing items in the cart are preserved.          //
-//     [itemId]: 1 adds the new item to the cart with a quantity of 1.
-//
-//     If cartItems[itemId] is defined (the item already exists in the cart), this block executes.
-//     Again, setCartItems uses the prev state.
-//     { ...prev, [itemId]: prev[itemId] + 1 } creates a new state object:
-//
-//      ...prev copies all the existing items.
-//
-//      [itemId]: prev[itemId] + 1 updates the quantity of the specified item by incrementing it by 1.                                                        //
-//                                                                                                                                 //
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   
-
-
-
-
-
-const removeFromCart = (itemId: string)=>{
-    if (!cartItems[itemId] ) return;
-    if(cartItems[itemId] === 0 ) return;
-    if(cartItems[itemId]){
-        setCartItems((prev)=> ({...prev, [itemId]: prev[itemId] -1}))
-    }
-
-}
-
-
-    
-
-    const updateCartItemCount = (newAmount: number, itemId: string)=>{
-        if(newAmount < 0 ) return ; 
-        setCartItems((prev)=> ({...prev, [itemId]: newAmount}))
+    const getCartItemCount = (itemId: string): number => {
+        return cartItems[itemId] || 0;
     };
 
-    const getTotalCartAmount = (): number =>{
+    const addToCart = (itemId: string) => {
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: (prev[itemId] || 0) + 1,
+        }));
+    };
 
-        let totalAmount = 0;
-        for (const item in cartItems){
-            let itemInfo: IProduct = products.find((product)=> product._id === item)
-            
-            totalAmount += cartItems[item] * itemInfo?.price
+    const removeFromCart = (itemId: string) => {
+        if (!cartItems[itemId]) return;
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: prev[itemId] - 1,
+        }));
+    };
 
-            
-        }
-        return totalAmount;
-    }
+    const updateCartItemCount = (newAmount: number, itemId: string) => {
+        if (newAmount < 0) return;
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: newAmount,
+        }));
+    };
 
+    const getTotalCartAmount = (): number => {
+        return Object.keys(cartItems).reduce((total, itemId) => {
+            const itemInfo = products.find((product) => product._id === itemId);
+            return total + (cartItems[itemId] * (itemInfo?.price || 0));
+        }, 0);
+    };
 
-    const checkout = async()=>{
-        const body = {customerID: localStorage.getItem("userID"), cartItems}
+    const checkout = async () => {
+        const body = { customerID: localStorage.getItem("userID"), cartItems };
         try {
-            await axios.post(`${apiURL}/product/checkout`, body, {
-                headers,
-            });
-            setCartItems({})
+            await axios.post(`${apiURL}/product/checkout`, body, { headers });
+            setCartItems({});
             fetchAvailableMoney();
             fetchPurchasedItems();
-            navigate("/")
-            
+            navigate("/");
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
-    }
+    };
 
-    useEffect(()=>{
-        if(isAuthenticated){
+    useEffect(() => {
+        if (isAuthenticated) {
             fetchAvailableMoney();
             fetchPurchasedItems();
-
         }
-        
+    }, [isAuthenticated, fetchAvailableMoney, fetchPurchasedItems]);
 
-    },[isAuthenticated, fetchAvailableMoney, fetchPurchasedItems]);
-
-    useEffect(()=>{
-        if(!isAuthenticated){
+    useEffect(() => {
+        if (!isAuthenticated) {
             localStorage.clear();
-            setCookies("access_token", null)
+            setCookies("access_token", null);
         }
-
-
-    }, [isAuthenticated,setCookies])
-
+    }, [isAuthenticated, setCookies]);
 
     const contextValue: IShopContext = {
         addToCart,
@@ -193,12 +137,8 @@ const removeFromCart = (itemId: string)=>{
         availableMoney,
         purchasedItems,
         isAuthenticated,
-        setIsAuthenticated
+        setIsAuthenticated,
     };
 
-    return (
-    <ShopContext.Provider value={contextValue}>
-        {props.children}
-    </ShopContext.Provider>
-    )
-}
+    return <ShopContext.Provider value={contextValue}>{props.children}</ShopContext.Provider>;
+};

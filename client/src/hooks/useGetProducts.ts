@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState , useCallback} from "react"
 import axios from "axios"
 import { toast } from "react-toastify";
 import { useGetToken } from "./useGetToken";
@@ -15,7 +15,7 @@ export const useGetProducts = ()=>{
     const {isAuthenticated} = useContext<IShopContext>(ShopContext)
 
 
-    const fetchProducts = async()=>{
+    const fetchProducts = useCallback(async()=>{
 
 
         try {
@@ -27,7 +27,8 @@ export const useGetProducts = ()=>{
 
             
         }
-    }
+    } , [headers])
+
 
     useEffect(()=>{ 
         if(isAuthenticated){
