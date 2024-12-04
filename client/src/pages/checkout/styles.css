@@ -42,3 +42,35 @@
     margin: 10px;
     cursor: pointer;
   }
+
+
+
+  @media (max-width: 600px) {
+    .cart-item {
+        flex-direction: column;
+        width: 60%;
+        height: 70%;
+        padding: 20px;
+    }
+
+    .cart-item img {
+        width: 100%;
+        height: auto;
+        margin: 0 0 20px 0;
+    }
+
+    .cart-item .description {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .count-handler {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .count-handler button, .count-handler input {
+        margin: 5px;
+    }
+}

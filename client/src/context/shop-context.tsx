@@ -68,7 +68,7 @@ export const ShopContextProvider = (props)=>{
             const result = await axios.get(`http://localhost:3001/product/purchased-items/${localStorage.getItem("userID")}`, 
             {headers}
         )
-        setPurchasedItems(result.data.purchasedItems)
+        setPurchasedItems(result?.data?.purchasedItems)
             
         } catch (err) {
             toast.error("ERROR:  Something went wrong")
@@ -138,7 +138,7 @@ const removeFromCart = (itemId: string)=>{
         for (const item in cartItems){
             let itemInfo: IProduct = products.find((product)=> product._id === item)
             
-            totalAmount += cartItems[item] * itemInfo.price
+            totalAmount += cartItems[item] * itemInfo?.price
 
             
         }

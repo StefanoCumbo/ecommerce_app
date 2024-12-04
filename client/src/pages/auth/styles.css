@@ -65,3 +65,15 @@ input:focus {
     cursor: pointer;
     transform: translateY(-2px);
 }
+
+
+@media (max-width: 600px) {
+    .auth {
+        flex-direction: column;
+    }
+
+    .auth-container {
+        width: 60%;
+        margin: 10px 0;
+    }
+}

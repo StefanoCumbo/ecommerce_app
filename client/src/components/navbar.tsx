@@ -4,6 +4,7 @@ import {faShoppingCart} from '@fortawesome/free-solid-svg-icons'
 import { useContext } from "react";
 import { IShopContext, ShopContext } from "../context/shop-context";
 import { useCookies } from "react-cookie";
+import "./styles.css";
 
 
 export const Navbar = () => {
@@ -15,8 +16,6 @@ export const Navbar = () => {
     const logout = ()=>{
         
         setIsAuthenticated(false)
-
-    
 
     }
 
