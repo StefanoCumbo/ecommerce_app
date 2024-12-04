@@ -7,7 +7,7 @@ import { userRouter } from './routes/user'
 import { productRouter } from './routes/product'
 const app = express()
 
-
+const port = process.env.PORT || 3001
 
 //middlewear
 app.use(express.json())
@@ -23,6 +23,6 @@ mongoose.connect("mongodb+srv://stefanocumbo72:ecommercepassword@ecommerce.edt3v
     .catch((err)=> console.log("Could not cinnect to MongoDB", err))
 
 
-app.listen(3001, ()=> {
+app.listen(port, ()=> {
     console.log("Server started!")
 })
