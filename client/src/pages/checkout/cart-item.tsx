@@ -18,7 +18,7 @@ export const CartItem = ({product}: Props) => {
     const CartItemCount = getCartItemCount(_id)
     return ( 
         <div className="cart-item">
-             <img src={imageURL}/>
+             <img src={imageURL}  alt={productName}/>
             <div className="description">
                 <h3>{productName}</h3>
                 <p>Price: ${price}</p>

@@ -8,6 +8,9 @@ import { IShopContext, ShopContext } from "../../context/shop-context";
 
 import "./styles.css"
 
+
+const apiURL = process.env.REACT_APP_API_URL
+
 export const AuthPage = () => {
     return ( 
     <div className="auth">
@@ -31,7 +34,7 @@ const Register = () => {
     const handleSubmit = async (e: SyntheticEvent)=>{
         e.preventDefault()
         try{
-            await axios.post('http://localhost:3001/user/register', {
+            await axios.post(`${apiURL}/user/register`, {
                 username,
                 password,
             });
@@ -97,7 +100,7 @@ const Login = () => {
     const handleSubmit = async (e: SyntheticEvent)=>{
         e.preventDefault()
         try{
-            const result = await axios.post('http://localhost:3001/user/login', {
+            const result = await axios.post(`${apiURL}/user/login`, {
                 username,
                 password,
             });

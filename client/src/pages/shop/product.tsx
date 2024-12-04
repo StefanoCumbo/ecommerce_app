@@ -22,7 +22,7 @@ export const Product = ({product}: Props) => {
 
     return ( 
         <div className="product">
-            <img src={imageURL}/>
+            <img src={imageURL} alt={productName}/>
             <div className="description">
                 <h3>{productName}</h3>
                 <p> {description}</p>

@@ -20,7 +20,7 @@ export const PurchasedItemsPage = () => {
                     return (
                     <div className="item">
                         <h3>{item.productName}</h3>
-                        <img src={item.imageURL}/> 
+                        <img src={item.imageURL} alt={item.productName}/> 
                         <p>${item.price}</p>
                         <button onClick={()=> addToCart(item._id)}> 
                              Purchase Again {count > 0 && <> ({count})</>}

@@ -6,6 +6,9 @@ import { IProduct } from "../models/interfaces";
 import { IShopContext, ShopContext } from "../context/shop-context";
 
 
+const apiURL = process.env.REACT_APP_API_URL
+
+
 export const useGetProducts = ()=>{
     const [products, setProducts] = useState<IProduct[]>([]);
     const {headers} = useGetToken()
@@ -16,7 +19,7 @@ export const useGetProducts = ()=>{
 
 
         try {
-            const fetchedProducts = await axios.get('http://localhost:3001/product', {headers});
+            const fetchedProducts = await axios.get(`${apiURL}/product`, {headers});
             setProducts(fetchedProducts.data.products)
             
         } catch (error) {
@@ -34,7 +37,7 @@ export const useGetProducts = ()=>{
         }
 
 
-    },[isAuthenticated])
+    },[isAuthenticated, fetchProducts])
 
 
     return {products};

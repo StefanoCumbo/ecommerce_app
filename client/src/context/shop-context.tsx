@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 
+const apiURL = process.env.REACT_APP_API_URL
+
 export interface IShopContext{
     addToCart: (itemId: string) => void;
     removeFromCart: (itemId: string) => void;
@@ -50,10 +52,9 @@ export const ShopContextProvider = (props)=>{
 
     const navigate = useNavigate();
 
-
     const fetchAvailableMoney = async()=>{
         try {
-            const result = await axios.get(`http://localhost:3001/user/available-money/${localStorage.getItem("userID")}`, 
+            const result = await axios.get(`${apiURL}/user/available-money/${localStorage.getItem("userID")}`, 
             {headers}
         )
         setAvailableMoney(result.data.availableMoney)
@@ -65,7 +66,7 @@ export const ShopContextProvider = (props)=>{
     }
     const fetchPurchasedItems = async()=>{
         try {
-            const result = await axios.get(`http://localhost:3001/product/purchased-items/${localStorage.getItem("userID")}`, 
+            const result = await axios.get(`${apiURL}/product/purchased-items/${localStorage.getItem("userID")}`, 
             {headers}
         )
         setPurchasedItems(result?.data?.purchasedItems)
@@ -149,7 +150,7 @@ const removeFromCart = (itemId: string)=>{
     const checkout = async()=>{
         const body = {customerID: localStorage.getItem("userID"), cartItems}
         try {
-            await axios.post("http://localhost:3001/product/checkout", body, {
+            await axios.post(`${apiURL}/product/checkout`, body, {
                 headers,
             });
             setCartItems({})
@@ -170,7 +171,7 @@ const removeFromCart = (itemId: string)=>{
         }
         
 
-    },[isAuthenticated]);
+    },[isAuthenticated, fetchAvailableMoney, fetchPurchasedItems]);
 
     useEffect(()=>{
         if(!isAuthenticated){
@@ -179,7 +180,7 @@ const removeFromCart = (itemId: string)=>{
         }
 
 
-    }, [isAuthenticated])
+    }, [isAuthenticated,setCookies])
 
 
     const contextValue: IShopContext = {
