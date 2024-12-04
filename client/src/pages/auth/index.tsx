@@ -38,7 +38,9 @@ const Register = () => {
                 username,
                 password,
             });
-            toast.success("User Registered")
+            toast.success("User Registered, Please log in :) ")
+            setUsername("")
+            setPassword("")
 
         } catch(err){
             if(err?.response?.data?.type === UserErrors.USERNAME_ALREADY_EXISTS){
