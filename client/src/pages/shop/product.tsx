@@ -16,7 +16,6 @@ export const Product = ({product}: Props) => {
 
 
     const count = getCartItemCount(_id)
-    console.log(count);
     
 
 
