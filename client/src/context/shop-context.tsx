@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useCallback, useEffect, useState } from "react"
 import { useGetProducts } from "../hooks/useGetProducts";
 import { IProduct } from "../models/interfaces";
 import axios from "axios";
@@ -36,6 +36,8 @@ const defaultVal: IShopContext = {
 
 export const ShopContext = createContext<IShopContext>(defaultVal)
 
+const reactAPI = process.env.REACT_APP_API_URL
+
 
 export const ShopContextProvider = (props)=>{
 
@@ -53,9 +55,9 @@ export const ShopContextProvider = (props)=>{
 
 
 
-    const fetchAvailableMoney = async()=>{
+    const fetchAvailableMoney = useCallback( async()=>{
         try {
-            const result = await axios.get(`http://localhost:3001/user/available-money/${localStorage.getItem("userID")}`, 
+            const result = await axios.get(`${reactAPI}/user/available-money/${localStorage.getItem("userID")}`, 
             {headers}
         )
         setAvailableMoney(result.data.availableMoney)
@@ -64,10 +66,13 @@ export const ShopContextProvider = (props)=>{
             toast.error("ERROR:  Something went wrong")
             
         }
-    }
-    const fetchPurchasedItems = async()=>{
+    } ,[headers,setAvailableMoney])
+
+
+
+    const fetchPurchasedItems = useCallback(async()=>{
         try {
-            const result = await axios.get(`http://localhost:3001/product/purchased-items/${localStorage.getItem("userID")}`, 
+            const result = await axios.get(`${reactAPI}/product/purchased-items/${localStorage.getItem("userID")}`, 
             {headers}
         )
         setPurchasedItems(result.data.purchasedItems)
@@ -76,7 +81,7 @@ export const ShopContextProvider = (props)=>{
             toast.error("ERROR:  Something went wrong")
             
         }
-    }
+    }, [headers,setPurchasedItems])
 
     const getCartItemCount = (itemId: string): number=>{
         if(itemId in cartItems){
@@ -173,7 +178,7 @@ const removeFromCart = (itemId: string)=>{
         }
         
 
-    },[isAuthenticated]);
+    },[isAuthenticated, fetchAvailableMoney, fetchPurchasedItems]);
 
     useEffect(()=>{
         if(!isAuthenticated){
@@ -182,7 +187,7 @@ const removeFromCart = (itemId: string)=>{
         }
 
 
-    }, [isAuthenticated])
+    }, [isAuthenticated, setCookies])
 
 
     const contextValue: IShopContext = {

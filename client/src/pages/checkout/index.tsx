@@ -25,14 +25,13 @@ export const CheckoutPage = () => {
       <div>
         <h1>Your Cart Items</h1>
       </div>
-      <div className="cart">
-        {products.map((product: IProduct) => {
-          if (getCartItemCount(product._id) !== 0) {
-            return <CartItem key={product._id} data={product} />;
-          }
-        })}
-      </div>
 
+      <div className="cart">
+        {products.filter((product: IProduct) => getCartItemCount(product._id) !== 0).map((product: IProduct) => (
+        <CartItem key={product._id} data={product} />
+         ))}
+     </div>
+      
       {totalAmount > 0 ? (
         <div className="checkout">
           <p>Subtotal: ${totalAmount}</p>

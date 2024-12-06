@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import  { useContext } from "react";
 import { ShopContext } from "../../context/shop-context";
 import { IProduct } from "../../models/interfaces";
 
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const CartItem = (props: Props) => {
-  const { _id, productName, description, price, stockQuantity, imageURL } =
+  const { _id, productName,  price,  imageURL } =
     props.data;
   const { getCartItemCount, addToCart, removeFromCart, updateCartItemCount } =
     useContext(ShopContext);
@@ -15,7 +15,7 @@ export const CartItem = (props: Props) => {
   const cartItemCount = getCartItemCount(_id);
   return (
     <div className="cartItem">
-      <img src={imageURL} />
+      <img src={imageURL} alt={productName} />
       <div className="description">
         <p>
           <b>{productName}</b>
