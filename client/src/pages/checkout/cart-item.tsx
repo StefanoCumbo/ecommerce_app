@@ -1,38 +1,35 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { ShopContext } from "../../context/shop-context";
 import { IProduct } from "../../models/interfaces";
-import { IShopContext, ShopContext } from "../../context/shop-context";
 
-interface Props{
-    product : IProduct;
-
+interface Props {
+  data: IProduct;
 }
 
+export const CartItem = (props: Props) => {
+  const { _id, productName, description, price, stockQuantity, imageURL } =
+    props.data;
+  const { getCartItemCount, addToCart, removeFromCart, updateCartItemCount } =
+    useContext(ShopContext);
 
-
-export const CartItem = ({product}: Props) => {
-
-    const {_id, imageURL, productName, price} = product;
-
-    const {addToCart, removeFromCart, updateCartItemCount, getCartItemCount} = useContext<IShopContext>(ShopContext);
-
-    const CartItemCount = getCartItemCount(_id)
-    return ( 
-        <div className="cart-item">
-             <img src={imageURL}  alt={productName}/>
-            <div className="description">
-                <h3>{productName}</h3>
-                <p>Price: ${price}</p>
-            </div>
-
-                <div className="count-handler">
-                    <button onClick={()=> removeFromCart(_id)}> - </button>
-                    <input type="number" value={CartItemCount} onChange={(e)=> updateCartItemCount(Number(e.target.value),_id)}></input>
-                    <button onClick={()=>addToCart(_id)}> +</button>
-
-                </div>
-
-            
+  const cartItemCount = getCartItemCount(_id);
+  return (
+    <div className="cartItem">
+      <img src={imageURL} />
+      <div className="description">
+        <p>
+          <b>{productName}</b>
+        </p>
+        <p> Price: ${price}</p>
+        <div className="countHandler">
+          <button onClick={() => removeFromCart(_id)}> - </button>
+          <input
+            value={cartItemCount}
+            onChange={(e) => updateCartItemCount(Number(e.target.value), _id)}
+          />
+          <button onClick={() => addToCart(_id)}> + </button>
         </div>
-     );
-}
- 
+      </div>
+    </div>
+  );
+};
