@@ -1,76 +1,78 @@
 .cart {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .cart-item {
-    width: 700px;
-    height: 250px;
-    display: flex;
-  
-    align-items: center;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
-    border-radius: 25px;
-    margin: 30px;
-  }
-  
-  .cart-item img {
-    width: 200px;
-    margin-left: 50px;
-  }
-  
-  .cart-item .description {
-    width: 100%;
-    font-size: 30px;
-  }
-  
-  .countHandler input {
-    width: 40px;
-    text-align: center;
-    font-weight: bolder;
-  }
-  
-  .checkout button {
-    width: 150px;
-    height: 50px;
-    background-color: rgb(19, 19, 19);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    margin: 10px;
-    cursor: pointer;
-  }
-
-
-
-  @media (max-width: 600px) {
-    .cart-item {
-        flex-direction: column;
-        width: 60%;
-        height: 70%;
-        padding: 20px;
-    }
-
-    .cart-item img {
-        width: 100%;
-        height: auto;
-        margin: 0 0 20px 0;
-    }
-
-    .cart-item .description {
-        font-size: 24px;
-        text-align: center;
-    }
-
-    .count-handler {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .count-handler button, .count-handler input {
-        margin: 5px;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
+.cartItem {
+  width: 700px;
+  height: 250px;
+  display: flex;
+
+  align-items: center;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+  margin: 30px;
+}
+
+.cartItem img {
+  width: 200px;
+  margin-left: 50px;
+}
+
+.cartItem .description {
+  width: 100%;
+  font-size: 30px;
+}
+
+.countHandler input {
+  width: 40px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.checkout button {
+  width: 150px;
+  height: 50px;
+  background-color: rgb(19, 19, 19);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+
+/* Media query for mobile phones */
+@media (max-width: 600px) {
+  .cartItem {
+    width: 70%;
+    height: 70%;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+  }
+
+  .cartItem img {
+    width: 60%;
+    margin-top: 20px ;
+    margin-bottom: 15px;
+  }
+
+  .cartItem .description {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .countHandler input {
+    width: 30px;
+  }
+
+  .checkout button {
+    width: 80px;
+    height: 40px;
+    margin: 5px;
+  }
+}
+ 

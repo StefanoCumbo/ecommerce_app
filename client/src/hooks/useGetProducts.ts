@@ -3,15 +3,23 @@ import { useEffect, useState } from "react";
 
 export const useGetProducts = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchProducts = async () => {
-    const products = await axios.get("http://localhost:3001/product");
-    setProducts(products.data.products);
+    setLoading(true);
+    try {
+      const response = await axios.get("http://localhost:3001/product");
+      setProducts(response.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  return { products, fetchProducts };
+  return { products, loading, fetchProducts };
 };

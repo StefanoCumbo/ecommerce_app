@@ -8,12 +8,17 @@ import { useGetProducts } from "../../hooks/useGetProducts";
 import { IProduct } from "../../models/interfaces";
 
 export const CheckoutPage = () => {
-  const{ getCartItemCount, getTotalCartAmount, checkout } =useContext(ShopContext);
+  const { getCartItemCount, getTotalCartAmount, checkout } =
+    useContext(ShopContext);
   const totalAmount = getTotalCartAmount();
 
-  const { products } = useGetProducts();
+  const { products, loading } = useGetProducts();
 
   const navigate = useNavigate();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="cart">
@@ -23,26 +28,19 @@ export const CheckoutPage = () => {
       <div className="cart">
         {products.map((product: IProduct) => {
           if (getCartItemCount(product._id) !== 0) {
-            return <CartItem data={product} />;
+            return <CartItem key={product._id} data={product} />;
           }
         })}
       </div>
 
       {totalAmount > 0 ? (
         <div className="checkout">
-          <p> Subtotal: ${totalAmount} </p>
-          <button onClick={() => navigate("/")}> Continue Shopping </button>
-          <button
-            onClick={() => {
-              checkout(localStorage.getItem("userID"));
-            }}
-          >
-            {" "}
-            Checkout{" "}
-          </button>
+          <p>Subtotal: ${totalAmount}</p>
+          <button onClick={() => navigate("/")}>Continue Shopping</button>
+          <button onClick={checkout}>Checkout</button>
         </div>
       ) : (
-        <h1> Your Shopping Cart is Empty</h1>
+        <h1>Your Shopping Cart is Empty</h1>
       )}
     </div>
   );
