@@ -6,6 +6,7 @@ import { useGetToken } from "../hooks/useGetToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
+import { ProductErrors } from "../models/errors";
 
 export interface IShopContext{
     addToCart: (itemId: string) => void;
@@ -153,22 +154,34 @@ const removeFromCart = (itemId: string)=>{
     }
 
 
-    const checkout = async()=>{
-        const body = {customerID: localStorage.getItem("userID"), cartItems}
+    const checkout = async () => {
+        const body = { customerID: localStorage.getItem("userID"), cartItems };
         try {
-            await axios.post("http://localhost:3001/product/checkout", body, {
-                headers,
-            });
-            setCartItems({})
-            fetchProducts();
-            fetchAvailableMoney();
-            fetchPurchasedItems();
-            navigate("/")
-            
+          const res = await axios.post(`${reactAPI}/product/checkout`, body, { headers });
+          setCartItems({});
+          setPurchasedItems(res.data.purchasedItems);
+          fetchAvailableMoney();
+          fetchProducts();
+          fetchPurchasedItems();
+          navigate("/");
         } catch (err) {
-            toast.error("ERROR: Could not process payment...not enough funds")
+          let errorMessage = "";
+          switch (err.response?.data?.type) {
+            case ProductErrors.NO_PRODUCT_FOUND:
+              errorMessage = "No product found";
+              break;
+            case ProductErrors.NO_AVAILABLE_MONEY:
+              errorMessage = "Not enough money";
+              break;
+            case ProductErrors.NOT_ENOUGH_STOCK:
+              errorMessage = "Not enough stock";
+              break;
+            default:
+              errorMessage = "Something went wrong";
+          }
+          toast.error("ERROR: " + errorMessage);
         }
-    }
+      };
 
     useEffect(()=>{
         if(isAuthenticated){
