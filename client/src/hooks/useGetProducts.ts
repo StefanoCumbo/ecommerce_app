@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export const useGetProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const reactAPI = process.env.REACT_APP_API_URL
+  const reactAPI = process.env.REACT_APP_API_URL;
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${reactAPI}/product`);
@@ -17,7 +17,7 @@ export const useGetProducts = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [reactAPI]);
 
   useEffect(() => {
     fetchProducts();
