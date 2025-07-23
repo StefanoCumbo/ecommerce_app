@@ -11,7 +11,7 @@ export const ShopPage = () => {
   const { products, loading } = useGetProducts();
 
   if (!cookies.access_token) {
-    return <Navigate to="/auth" />;
+    return <Navigate to="/register" />;
   }
 
   return (

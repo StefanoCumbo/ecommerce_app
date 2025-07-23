@@ -32,7 +32,7 @@ export const Navbar = () => {
                     <Link to="/purchased-items"> Purchases</Link>
                     <Link to="/checkout"> <FontAwesomeIcon icon={faShoppingCart}/></Link>
                     <Link to="/auth"></Link>
-                    <Link to="/auth" onClick={logout}>Logout</Link>
+                    <Link to="/register" onClick={logout}>Logout</Link>
                     <span> ${availableMoney.toFixed(2)}</span>
 
                 </>

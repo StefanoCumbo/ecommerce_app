@@ -1,13 +1,14 @@
 import './App.css';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {Navbar} from './components/navbar';
-import { AuthPage } from './pages/auth';
 import { CheckoutPage } from './pages/checkout';
 import { PurchasedItemsPage } from './pages/purchased-items';
 import { ShopPage } from './pages/shop';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ShopContextProvider } from './context/shop-context';
+import { Register } from './pages/register';
+import { Login } from './pages/login';
 
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
         <Routes>
 
           <Route path='/'  element={<ShopPage/>}/>
-          <Route path='/auth'  element={<AuthPage/>} />
+          <Route path='/register'  element={<Register/>} />
+          <Route path='/login'  element={<Login/>} />
+
           <Route path='/checkout' element={<CheckoutPage/>} />
           <Route path='/purchased-items' element={<PurchasedItemsPage/>} />
 

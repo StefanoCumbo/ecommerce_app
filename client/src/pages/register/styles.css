@@ -66,6 +66,11 @@ input:focus {
     transform: translateY(-2px);
 }
 
+.login_link{
+    margin-top: 20px;
+    
+}
+
 
 @media (max-width: 600px) {
     .auth {
