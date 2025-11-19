@@ -11,6 +11,7 @@ export const Navbar = () => {
     const {availableMoney, isAuthenticated,setIsAuthenticated} = useContext<IShopContext>(ShopContext)
 
 
+    
 
     const logout = ()=>{
         
